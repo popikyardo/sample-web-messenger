@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/security
+    http://www.springframework.org/schema/security/spring-security.xsd
+    ">
+
+    <beans:bean id="roleHierarchy" class="org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl">
+        <beans:property name="hierarchy">
+            <beans:value>
+                ROLE_ADMIN > ROLE_USER
+            </beans:value>
+        </beans:property>
+    </beans:bean>
+
+    <beans:bean id="roleVoter" class="org.springframework.security.access.vote.RoleHierarchyVoter">
+        <beans:constructor-arg ref="roleHierarchy"/>
+    </beans:bean>
+
+    <beans:bean id="passwordEncoder"
+          class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+        <beans:constructor-arg value="10"/>
+    </beans:bean>
+
+    <beans:bean id="tokenRepository" class="org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl" >
+        <beans:property name="createTableOnStartup"  value="false"/>
+        <beans:property name="dataSource" ref="dataSource"/>
+    </beans:bean>
+
+    <beans:bean id="rememberMeServices" class="org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices">
+        <beans:property name="userDetailsService" ref="userService"/>
+        <beans:property name="parameter" value="rememberme"/>
+        <beans:property name="key" value="hf937h43f8g1d86g4387g3-87gd165f12FFFGS"/>
+        <beans:property name="tokenRepository" ref="tokenRepository"/>
+        <beans:property name="tokenValiditySeconds" value="1209600"/><!--two weeks-->
+    </beans:bean>
+
+    <beans:bean id="switchUserProcessingFilter" class="org.springframework.security.web.authentication.switchuser.SwitchUserFilter">
+        <beans:property name="userDetailsService" ref="userService" />
+        <beans:property name="switchUserUrl" value="/j_spring_security_switch_user" />
+        <beans:property name="exitUserUrl" value="/j_spring_security_exit_user" />
+        <beans:property name="targetUrl" value="/" />
+    </beans:bean>
+
+    <http pattern="/resources/js/vendor/language" security="none" />
+    <http pattern="/favicon.ico" security="none" />
+
+    <http auto-config="true" use-expressions="true" access-denied-page="/403">
+        <custom-filter position="SWITCH_USER_FILTER" ref="switchUserProcessingFilter" />
+        <intercept-url pattern="/j_spring_security_switch_user" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/user/create" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/user/search" access="hasAnyRole('ROLE_ADMIN, ROLE_MANAGER')"/>
+        <intercept-url pattern="/login" access="permitAll" />
+        <intercept-url pattern="/WEB-INF/spring" access="isAuthenticated()" />
+
+        <form-login username-parameter="email"
+                    password-parameter="password"
+
+                    login-page="/login" default-target-url="/" authentication-failure-url="/login?failed"/>
+
+        <logout logout-url="/logout" logout-success-url="/login" />
+        <remember-me services-ref="rememberMeServices"/>
+
+    </http>
+
+    <authentication-manager alias="authManager">
+      <authentication-provider user-service-ref="userService">
+          <password-encoder ref="passwordEncoder"/>
+      </authentication-provider>
+
+    </authentication-manager>
+
+</beans:beans>
