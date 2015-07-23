@@ -59,8 +59,8 @@
                 { "mData": "email" },
                 { "mData": "id",
                     "mRender": function( data, type, full) {
-                        var res = '&nbsp;&nbsp;&nbsp;<a href="/user/edit?userId='+data+'"><i class="fa fa-pencil"></i></a>';
-                        res += '&nbsp;&nbsp;&nbsp;<a href="/j_spring_security_switch_user?j_username='+full.email+'"><i class="fa fa-mail-forward"></i></a>';
+                        var res = '<a href="/user/edit?userId='+data+'" title="<spring:message code="View.EditUser"/>"><i class="fa fa-pencil"></i></a>';
+                        res += '&nbsp;&nbsp;&nbsp;<a href="/j_spring_security_switch_user?j_username='+full.email+'" title="<spring:message code="View.LoginAs"/>"><i class="fa fa-mail-forward"></i></a>';
                         return res;
                     }
                 }

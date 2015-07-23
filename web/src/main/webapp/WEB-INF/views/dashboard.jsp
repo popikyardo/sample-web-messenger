@@ -6,11 +6,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
-<sec:authorize access="hasRole('ROLE_ADMIN')">
-    <jsp:include page="/WEB-INF/views/admin/userList.jsp" />
-</sec:authorize>
-
-<sec:authorize access="hasRole('ROLE_USER')">
 <ul class="timeline">
 
     <!-- timeline time label -->
@@ -48,4 +43,3 @@
         //TODO: ajax get events in timeline
     });
 </script>
-</sec:authorize>
