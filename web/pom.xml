@@ -39,6 +39,13 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Identicons -->
+        <dependency>
+            <groupId>com.github.donpark.identicon</groupId>
+            <artifactId>core</artifactId>
+            <version>1.0</version>
+        </dependency>
+
         <!-- Spring -->
         <dependency>
             <groupId>org.springframework</groupId>

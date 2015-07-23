@@ -38,6 +38,7 @@
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
@@ -45,13 +46,23 @@
     <!-- jQuery 2.1.3 -->
     <script src="${pageContext.request.contextPath}/resources/plugins/jQuery/jQuery-2.1.3.min.js"></script>
 </head>
-<body class="skin-blue">
+<body class="skin-blue layout-boxed">
     <div class="wrapper">
         <!-- Main Header -->
         <header class="main-header">
             <!-- Header -->
             <tiles:insertAttribute name="header" />
         </header>
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="main-sidebar">
+
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+                <!-- Sidebar Page -->
+                <tiles:insertAttribute name="sidebar" />
+            </section>
+            <!-- /.sidebar -->
+        </aside>
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
@@ -60,10 +71,6 @@
                     <spring:message code="${pageHeaderKey}" />
                     <small><spring:message code="${descriptionKey}" /></small>
                 </h1>
-                <ol class="breadcrumb">
-                    <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-                    <li class="active">Here</li>
-                </ol>
             </section>
 
             <!-- Main content -->

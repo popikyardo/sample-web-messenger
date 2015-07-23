@@ -52,15 +52,13 @@
         <custom-filter position="SWITCH_USER_FILTER" ref="switchUserProcessingFilter" />
         <intercept-url pattern="/j_spring_security_switch_user" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/user/create" access="hasRole('ROLE_ADMIN')"/>
-        <intercept-url pattern="/user/search" access="hasAnyRole('ROLE_ADMIN, ROLE_MANAGER')"/>
+        <intercept-url pattern="/user/*" access="isAuthenticated()"/>
         <intercept-url pattern="/login" access="permitAll" />
         <intercept-url pattern="/WEB-INF/spring" access="isAuthenticated()" />
 
         <form-login username-parameter="email"
                     password-parameter="password"
-
                     login-page="/login" default-target-url="/" authentication-failure-url="/login?failed"/>
-
         <logout logout-url="/logout" logout-success-url="/login" />
         <remember-me services-ref="rememberMeServices"/>
 

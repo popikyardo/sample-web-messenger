@@ -40,6 +40,21 @@
                                     <form:errors path="email" cssClass="help-inline" cssStyle="color: red;"/>
                                 </td>
                             </tr>
+                            <sec:authorize access="hasRole('ROLE_ADMIN')">
+                                <tr>
+                                    <td>
+                                        <spring:message code="UI.Labels.User.Role"/>
+                                    </td>
+                                    <td>
+                                        <form:select path="userRole" cssClass="form-control">
+                                            <c:forEach items="${roles}" var="role">
+                                                <option value="${role.id}" <c:forEach items="${user.userRole}" var="uRole"> <c:if test="${role.id == uRole.id}">selected</c:if></c:forEach>><spring:message code="${role.name}"/></option>
+                                            </c:forEach>
+                                        </form:select>
+                                        <form:errors path="userRole" cssClass="help-inline" cssStyle="color: red;"/>
+                                    </td>
+                                </tr>
+                            </sec:authorize>
                             <tr>
                                 <td>
                                     <spring:message code="UI.Labels.User.Password"/>

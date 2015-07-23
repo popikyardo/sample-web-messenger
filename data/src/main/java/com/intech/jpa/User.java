@@ -2,6 +2,7 @@ package com.intech.jpa;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.intech.views.View;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -18,6 +19,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @JsonView({View.UserDataTable.class})
     private Long id;
 
     @Column(name = "password")
@@ -25,18 +27,22 @@ public class User {
 
     @Column(name = "first_name")
     @NotEmpty
+    @JsonView({View.UserDataTable.class})
     private String firstName;
 
     @Column(name = "last_name")
     @NotEmpty
+    @JsonView({View.UserDataTable.class})
     private String lastName;
 
     @Column
     @NotEmpty
     @Email
+    @JsonView({View.UserDataTable.class})
     private String email;
 
     @Column(name = "create_date")
+    @JsonView({View.UserDataTable.class})
     private Date createAt;
 
     @JsonIgnore

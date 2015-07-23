@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 /**
- * Created by popikyardo on 13.05.15.
+ * Created by popikyardo on 22.07.15.
  */
 @Controller
 public class MessageController extends BaseController{

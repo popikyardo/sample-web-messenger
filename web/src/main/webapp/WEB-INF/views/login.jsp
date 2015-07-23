@@ -58,8 +58,7 @@
                 </div><!-- /.col -->
             </div>
         </form>
-
-        <a href="#"><spring:message code="UI.Labels.Login.ForgotPassword"/></a>
+        <a href="register" class="text-center"><spring:message code="UI.Labels.Login.Register"/></a>
 
     </div><!-- /.login-box-body -->
 </div><!-- /.login-box -->

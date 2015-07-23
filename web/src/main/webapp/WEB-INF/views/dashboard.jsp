@@ -7,7 +7,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <sec:authorize access="hasRole('ROLE_ADMIN')">
-    <jsp:include page="/WEB-INF/views/user/userList.jsp" />
+    <jsp:include page="/WEB-INF/views/admin/userList.jsp" />
 </sec:authorize>
 
 <sec:authorize access="hasRole('ROLE_USER')">

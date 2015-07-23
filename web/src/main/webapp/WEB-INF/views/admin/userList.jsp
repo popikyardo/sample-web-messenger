@@ -13,16 +13,15 @@
             <h3 class="box-title"><spring:message code="User.Users"/></h3>
         </div><!-- /.box-header -->
         <div class="box-body">
-            <table id="courses" class="table table-bordered table-striped">
+            <table id="users" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                    <th></th>
+                    <th><spring:message code="UI.Labels.User.Photo"/></th>
                     <th><spring:message code="UI.Labels.User.FirstName"/></th>
                     <th><spring:message code="UI.Labels.User.LastName"/></th>
                     <th><spring:message code="UI.Labels.User.Created"/></th>
                     <th><spring:message code="UI.Labels.User.Email"/></th>
-                    <th><spring:message code="UI.Labels.User.Role"/></th>
-                    <th></th>
+                    <th><spring:message code="UI.Labels.User.Actions"/></th>
                 </tr>
                 </thead>
 
@@ -39,15 +38,15 @@
 
 <script>
     $(document).ready(function() {
-        $('#courses').dataTable( {
+        $('#users').dataTable( {
             "bServerSide": true,
             "bProcessing": true,
             "sAjaxSource": "/user/data",
             "sPaginationType": "bootstrap",
             "aoColumns": [
-                { "mData": "picture",
+                { "mData": "email",
                     "mRender": function( data, type, full) {
-                        return '<img src="/images/user/'+data+'" class="img-thumbnail">';
+                        return '<img src="/user/userpic?email='+data+'" class="img-thumbnail">';
                     }
                 },
                 { "mData": "firstName" },
@@ -57,22 +56,11 @@
                         return (new Date(data)).toLocaleDateString();
                     }
                 },
-                { "mData": "email",
-                    "mRender": function( data, type, full) {
-                        var res = '';
-                        <sec:authorize access="hasRole('ROLE_ADMIN')">
-                        res += '<a href="/j_spring_security_switch_user?j_username='+data+'"><i class="fa fa-mail-forward"></i></a>';
-                        </sec:authorize>
-                        res += '&nbsp;&nbsp;&nbsp;' + data;
-                        return res;
-                    }
-                },
+                { "mData": "email" },
                 { "mData": "id",
                     "mRender": function( data, type, full) {
-                        var res =  '<a href="/user/'+data+'/view"><i class="fa fa-eye"></i></a>';
-                        <sec:authorize access="hasRole('ROLE_ADMIN')">
-                        res += '&nbsp;&nbsp;&nbsp;<a href="/user/edit?userId='+data+'"><i class="fa fa-pencil"></i></a>';
-                        </sec:authorize>
+                        var res = '&nbsp;&nbsp;&nbsp;<a href="/user/edit?userId='+data+'"><i class="fa fa-pencil"></i></a>';
+                        res += '&nbsp;&nbsp;&nbsp;<a href="/j_spring_security_switch_user?j_username='+full.email+'"><i class="fa fa-mail-forward"></i></a>';
                         return res;
                     }
                 }

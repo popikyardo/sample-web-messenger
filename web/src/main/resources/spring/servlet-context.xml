@@ -62,6 +62,12 @@
         </beans:property>
     </beans:bean>
 
-    <beans:bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean"/>
+    <beans:bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <beans:property name="converters">
+            <beans:set>
+                <beans:bean class="com.intech.utils.StringToRoleConverter"/>
+            </beans:set>
+        </beans:property>
+    </beans:bean>
 
 </beans:beans>

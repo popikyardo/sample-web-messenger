@@ -1,5 +1,6 @@
 package com.intech.services;
 
+import com.intech.dto.PagingCriteria;
 import com.intech.jpa.SystemRole;
 import com.intech.jpa.User;
 import com.intech.repository.UserDAO;
@@ -7,6 +8,10 @@ import com.intech.utils.SecUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -106,7 +111,27 @@ public class UserServiceImpl extends GenericServiceImpl<User, Long> implements U
         if (StringUtils.isBlank(query)) {
             return Collections.emptyList();
         }
-        return userDAO.search(query);
+        return userDAO.search(query, null).getContent();
+    }
+
+    @Override
+    public Page<User> search(PagingCriteria criteria) {
+        Pageable pageable;
+        if(criteria.getSortFields()!=null && !criteria.getSortFields().isEmpty()){
+            pageable = new PageRequest(
+                    criteria.getDisplayStart(),
+                    criteria.getDisplaySize(),
+                    Sort.Direction.valueOf(criteria.getSortFields().get(0).getDirection().name()),
+                    criteria.getSortFields().get(0).getField());
+        } else {
+            pageable = new PageRequest(
+                    criteria.getDisplayStart(),
+                    criteria.getDisplaySize());
+        }
+        if(criteria.getSearch()!=null && !criteria.getSearch().isEmpty()) {
+            return userDAO.search(criteria.getSearch(), pageable);
+        }
+        return userDAO.findAll(pageable);
     }
 
 }
