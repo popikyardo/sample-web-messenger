@@ -14,4 +14,10 @@ public interface UserService extends UserDetailsService, GenericService<User, Lo
     public List<User> search(String query);
 
     public Page<User> search(PagingCriteria criteria);
+
+    public List<User> getContacts(User u);
+
+    public void addContact(User owner, User contact);
+
+    public void deleteContact(User owner, User contact);
 }

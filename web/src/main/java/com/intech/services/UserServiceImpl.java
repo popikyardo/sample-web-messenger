@@ -134,4 +134,28 @@ public class UserServiceImpl extends GenericServiceImpl<User, Long> implements U
         return userDAO.findAll(pageable);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<User> getContacts(User u) {
+        return userDAO.findContacts(u.getId());
+    }
+
+    @Override
+    @Transactional
+    public void addContact(User owner, User contact) {
+        List<User> contacts = userDAO.findContacts(owner.getId());
+        contacts.add(contact);
+        owner.setContacts(contacts);
+        userDAO.save(owner);
+    }
+
+    @Override
+    @Transactional
+    public void deleteContact(User owner, User contact) {
+        List<User> contacts = userDAO.findContacts(owner.getId());
+        contacts.remove(contact);
+        owner.setContacts(contacts);
+        userDAO.save(owner);
+    }
+
 }

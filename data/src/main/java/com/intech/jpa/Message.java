@@ -1,6 +1,8 @@
 package com.intech.jpa;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.intech.views.View;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -14,23 +16,31 @@ public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @JsonView({View.MessageDataTable.class})
     private Long id;
 
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "from_user_id", referencedColumnName = "id")
+    @JsonView({View.MessageDataTable.class})
     private User fromUser;
 
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "to_user_id", referencedColumnName = "id")
+    @JsonView({View.MessageDataTable.class})
     private User toUser;
 
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
     private MessageType type;
 
+    @Column(name = "topic")
+    @JsonView({View.MessageDataTable.class})
+    private String topic;
+
     @Column(name = "message")
+    @JsonView({View.MessageDataTable.class})
     private String message;
 
     @Column(name = "status")
@@ -39,6 +49,7 @@ public class Message {
 
     @Column(name = "date")
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonView({View.MessageDataTable.class})
     private Date date = new Date();
 
     @Column(name = "is_delete")

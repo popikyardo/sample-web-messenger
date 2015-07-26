@@ -104,6 +104,36 @@ public class UserController extends BaseController {
         }
     }
 
+    @RequestMapping(value = "/contacts", produces = "application/json")
+    @JsonView(View.UserDataTable.class)
+    @ResponseBody
+    public List<User> getContacts(){
+        return userService.getContacts(getLoggedUser());
+    }
+
+    @RequestMapping(value = "/contact/add")
+    @ResponseBody
+    public String addContact(@RequestParam long userId){
+        User contact = userService.findOne(userId);
+        userService.addContact(getLoggedUser(), contact);
+        return "Ok";
+    }
+
+    @RequestMapping(value = "/contact/delete")
+    @ResponseBody
+    public String deleteContact(@RequestParam long userId){
+        User contact = userService.findOne(userId);
+        userService.deleteContact(getLoggedUser(), contact);
+        return "Ok";
+    }
+
+    @RequestMapping(value = "/search", produces = "application/json")
+    @JsonView(View.UserDataTable.class)
+    @ResponseBody
+    public List<User> getContacts(@RequestParam String query){
+        return userService.search(query);
+    }
+
     @JsonView(View.UserDataTable.class)
     @RequestMapping(value = "/data", produces = "application/json")
     @ResponseBody

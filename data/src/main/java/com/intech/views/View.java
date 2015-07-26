@@ -5,4 +5,5 @@ package com.intech.views;
  */
 public class View {
     public interface UserDataTable {}
+    public interface MessageDataTable {}
 }

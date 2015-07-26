@@ -19,7 +19,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    @JsonView({View.UserDataTable.class})
+    @JsonView({View.UserDataTable.class,View.MessageDataTable.class})
     private Long id;
 
     @Column(name = "password")
@@ -27,18 +27,18 @@ public class User {
 
     @Column(name = "first_name")
     @NotEmpty
-    @JsonView({View.UserDataTable.class})
+    @JsonView({View.UserDataTable.class,View.MessageDataTable.class})
     private String firstName;
 
     @Column(name = "last_name")
     @NotEmpty
-    @JsonView({View.UserDataTable.class})
+    @JsonView({View.UserDataTable.class,View.MessageDataTable.class})
     private String lastName;
 
     @Column
     @NotEmpty
     @Email
-    @JsonView({View.UserDataTable.class})
+    @JsonView({View.UserDataTable.class,View.MessageDataTable.class})
     private String email;
 
     @Column(name = "create_date")
@@ -53,6 +53,15 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")}
     )
     private List<SystemRole> userRole;
+
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "contacts",
+            joinColumns = {@JoinColumn(name = "owner_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "contact_id", referencedColumnName = "id")}
+    )
+    private List<User> contacts;
 
     public Long getId() {
         return id;
@@ -110,6 +119,14 @@ public class User {
         this.createAt = createAt;
     }
 
+    public List<User> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(List<User> contacts) {
+        this.contacts = contacts;
+    }
+
     public String[] getRoleNames() {
         if (this.userRole != null) {
             String[] result = new String[this.userRole.size()];
@@ -125,5 +142,18 @@ public class User {
 
     public String getFullName() {
         return firstName + " " + lastName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o !=null && o instanceof User){
+           return (this.id.equals(((User) o).getId())) &&
+                   (this.firstName.equals(((User) o).getFirstName())) &&
+                   (this.lastName.equals(((User) o).getLastName())) &&
+                   (this.password.equals(((User) o).getPassword())) &&
+                   (this.email.equals(((User) o).getEmail())) &&
+                   (this.createAt.equals(((User) o).getCreateAt()));
+        }
+        return false;
     }
 }
