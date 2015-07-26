@@ -140,7 +140,7 @@ public class UserController extends BaseController {
     public DataTablesResponse<User> getData(@TableParam PagingCriteria criteria) {
         DataTablesResponse resp = new DataTablesResponse<>(criteria.getEcho());
         Page<User> page = userService.search(criteria);
-        resp.setITotalRecords(page.getTotalPages());
+        resp.setITotalRecords((int)page.getTotalElements());
         resp.setAaData(page.getContent());
         return resp;
     }

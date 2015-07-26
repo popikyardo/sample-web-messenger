@@ -19,9 +19,9 @@ public interface MessageDAO extends JpaRepository<Message, Long> {
 
     public Page<Message> findByDeletedOrderByDateDesc(boolean deleted, Pageable pageable);
 
-    @Query("SELECT m FROM Message m WHERE m.topic LIKE %?1% AND m.deleted=false ORDER BY m.date DESC")
+    @Query("SELECT m FROM Message m WHERE m.subject LIKE %?1% AND m.deleted=false ORDER BY m.date DESC")
     public Page<Message> search(String query, Pageable pageable);
 
-    @Query("SELECT m FROM Message m WHERE m.topic LIKE %?1% and m.toUser = ?2 and m.deleted=false ORDER BY m.date DESC")
+    @Query("SELECT m FROM Message m WHERE m.subject LIKE %?1% and m.toUser = ?2 and m.deleted=false ORDER BY m.date DESC")
     public Page<Message> search(String query, User toUser, Pageable pageable);
 }

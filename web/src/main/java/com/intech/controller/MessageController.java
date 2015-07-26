@@ -16,18 +16,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 /**
  * Created by popikyardo on 22.07.15.
  */
 @Controller
+@RequestMapping("/messages")
 public class MessageController extends BaseController{
 
     @Autowired
     private MessageService messageService;
 
     @JsonView(View.MessageDataTable.class)
-    @RequestMapping(value = "/messages/data", method = RequestMethod.GET)
+    @RequestMapping(value = "/data", method = RequestMethod.GET)
     @ResponseBody
     public DataTablesResponse<Message> getData(@TableParam PagingCriteria criteria, HttpServletRequest request) {
         User userTo = null;
@@ -43,13 +45,24 @@ public class MessageController extends BaseController{
     }
 
 
-    @RequestMapping(value = "/message.json", method = RequestMethod.PUT, produces = "application/json")
+    @RequestMapping(value = "/send", method = RequestMethod.POST, produces = "application/json")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public void updateMessage(@RequestBody Message message) {
-        Message updateMessage = messageService.findOne(message.getId());
-        updateMessage.setStatus(message.getStatus());
-        messageService.saveAndFlush(updateMessage);
+    public void sendMessage(@RequestParam Long contactId,
+                            @RequestParam String subject,
+                            @RequestParam String message) {
+        User toUser = new User();
+        toUser.setId(contactId);
+
+        Message msg = new Message();
+        msg.setSubject(subject);
+        msg.setMessage(message);
+        msg.setToUser(toUser);
+        msg.setFromUser(getLoggedUser());
+        msg.setDate(new Date());
+        msg.setDeleted(false);
+
+        messageService.save(msg);
     }
 
 }

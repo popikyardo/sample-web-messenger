@@ -37,7 +37,7 @@ public class Message {
 
     @Column(name = "topic")
     @JsonView({View.MessageDataTable.class})
-    private String topic;
+    private String subject;
 
     @Column(name = "message")
     @JsonView({View.MessageDataTable.class})
@@ -67,11 +67,11 @@ public class Message {
         this.status = MessageStatus.NEW;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -129,6 +129,14 @@ public class Message {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
     public enum MessageStatus{
