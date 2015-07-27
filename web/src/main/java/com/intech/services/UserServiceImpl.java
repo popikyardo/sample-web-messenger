@@ -3,6 +3,7 @@ package com.intech.services;
 import com.intech.dto.PagingCriteria;
 import com.intech.jpa.SystemRole;
 import com.intech.jpa.User;
+import com.intech.repository.SystemRoleDAO;
 import com.intech.repository.UserDAO;
 import com.intech.utils.SecUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -35,6 +36,8 @@ import java.util.List;
 public class UserServiceImpl extends GenericServiceImpl<User, Long> implements UserService {
 
     private UserDAO userDAO;
+
+    private SystemRoleDAO systemRoleDAO;
 
     @Autowired
     public UserServiceImpl(
@@ -93,13 +96,20 @@ public class UserServiceImpl extends GenericServiceImpl<User, Long> implements U
 
             return userDAO.save(persistentUser);
         } else {
+            List<SystemRole> defaultRoles = new ArrayList<>();
+            defaultRoles.add(systemRoleDAO.findByName("ROLE_USER"));
+
             List<SystemRole> roles = user.getUserRole();
-            user.setUserRole(null);
+            user.setUserRole(defaultRoles);
             user.setCreateAt(new Date());
             user.setPassword(SecUtils.bcrypt(user.getPassword()));
             userDAO.save(user);
 
-            user.setUserRole(roles);
+            if(roles==null || roles.isEmpty()) {
+                user.setUserRole(defaultRoles);
+            } else {
+                user.setUserRole(roles);
+            }
             return userDAO.save(user);
         }
     }

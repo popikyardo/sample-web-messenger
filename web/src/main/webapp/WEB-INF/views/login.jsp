@@ -58,7 +58,7 @@
                 </div><!-- /.col -->
             </div>
         </form>
-        <a href="register" class="text-center"><spring:message code="UI.Labels.Login.Register"/></a>
+        <a href="/register" class="text-center"><spring:message code="UI.Labels.Login.Register"/></a>
 
     </div><!-- /.login-box-body -->
 </div><!-- /.login-box -->

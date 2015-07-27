@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 public class BaseController {
 
     @Autowired
-    private UserService userService;
+    UserService userService;
 
     @ModelAttribute("currentUser")
     public User getLoggedUser() {

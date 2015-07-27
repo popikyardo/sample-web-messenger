@@ -54,6 +54,7 @@
         <intercept-url pattern="/user/create" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/user/*" access="isAuthenticated()"/>
         <intercept-url pattern="/login" access="permitAll" />
+        <intercept-url pattern="/register" access="permitAll" />
         <intercept-url pattern="/WEB-INF/spring" access="isAuthenticated()" />
 
         <form-login username-parameter="email"

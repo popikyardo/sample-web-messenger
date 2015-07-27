@@ -57,7 +57,7 @@ public class UserController extends BaseController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(@ModelAttribute User userCreateForm,
+    public String create(@ModelAttribute @Valid User userCreateForm,
                          BindingResult bindingResult,
                          Model model,
                          Locale locale,
@@ -67,9 +67,11 @@ public class UserController extends BaseController {
             model.addAttribute("roles", rolesService.findAll());
             return "user/edit";
         }
+        if(userService.findOne(userCreateForm.getEmail())==null) {
+            userService.save(userCreateForm);
+            redirectAttributes.addFlashAttribute("success", messageSource.getMessage("UI.Messages.User.CreatedSuccess", null, locale));
+        }
 
-        userService.save(userCreateForm);
-        redirectAttributes.addFlashAttribute("success", messageSource.getMessage("UI.Messages.User.CreatedSuccess", null, locale));
         return "redirect:/";
     }
 
